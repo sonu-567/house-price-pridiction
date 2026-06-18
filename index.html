@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Prediction</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>House Price Prediction</h1>
+
+    <input id="MedInc" placeholder="Median Income">
+
+    <input id="HouseAge" placeholder="House Age">
+
+    <input id="AveRooms" placeholder="Average Rooms">
+
+    <input id="AveBedrms" placeholder="Average Bedrooms">
+
+    <input id="Population" placeholder="Population">
+
+    <input id="AveOccup" placeholder="Average Occupancy">
+
+    <input id="Latitude" placeholder="Latitude">
+
+    <input id="Longitude" placeholder="Longitude">
+
+    <button onclick="predictPrice()">
+        Predict Price
+    </button>
+
+    <h2 id="result"></h2>
+
+</div>
+
+<script>
+
+async function predictPrice(){
+
+    const data = {
+        MedInc: document.getElementById("MedInc").value,
+        HouseAge: document.getElementById("HouseAge").value,
+        AveRooms: document.getElementById("AveRooms").value,
+        AveBedrms: document.getElementById("AveBedrms").value,
+        Population: document.getElementById("Population").value,
+        AveOccup: document.getElementById("AveOccup").value,
+        Latitude: document.getElementById("Latitude").value,
+        Longitude: document.getElementById("Longitude").value
+    };
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    document.getElementById("result").innerHTML =
+        "Predicted Price: $" +
+        result.predicted_price.toLocaleString();
+}
+
+</script>
+
+</body>
+</html>
